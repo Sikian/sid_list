@@ -1,0 +1,48 @@
+= Sid List
+
+List containing any type of Object intenteded to be indexed by status and id, making it easy to select all Objects for a given status, update the list, etc.
+
+== Introduction
+
+Sid List is a list I created for one of the servers I developed. The idea behind it was to provide a list that could easily manage any type of objects and index them by status & id and be able to load and update itself with just a command once it had been extended.
+
+As I had previously developed MdlSql (a modular sql gem), configuring the gem as I wanted proved itself clear and easy. For example, in case I wanted to make a list of instances which would be loaded from Mysql, it would go the following way:
+
+	require 'mdlsql'
+	class InstanceList < SidList
+		def load_hash	
+			results = MdlSql::select.from(:instances).where(:status, 1, '>').execute
+		end
+		def update_hash time
+			results = MdlSql::select.from(:instances).where("status > 1 AND updated_at > #{time}").execute
+		end
+		def new_obj obj_data
+			obj = Instance.new obj_data
+		end
+	end
+
+And with this I could just go straight to work with the list:
+
+	il = InstanceList.new
+	il.load
+	il.ready.first # Get the first of the 'ready' instance
+	il.update 
+
+== License
+
+Copyright (C) 2013 Sid List contributers
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+In order to contact the author of this gem, please write to sikian@gmail.com.
