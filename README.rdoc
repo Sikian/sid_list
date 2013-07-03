@@ -8,25 +8,25 @@ Sid List is a list I created for one of the servers I developed. The idea behind
 
 As I had previously developed MdlSql (a modular sql gem), configuring the gem as I wanted proved itself clear and easy. For example, in case I wanted to make a list of instances which would be loaded from Mysql, it would go the following way:
 
-	require 'mdlsql'
-	class InstanceList < SidList
-		def load_hash	
-			results = MdlSql::select.from(:instances).where(:status, 1, '>').execute
-		end
-		def update_hash time
-			results = MdlSql::select.from(:instances).where("status > 1 AND updated_at > #{time}").execute
-		end
-		def new_obj obj_data
-			obj = Instance.new obj_data
-		end
-	end
+  require 'mdlsql'
+  class InstanceList < SidList
+    def load_hash	
+      results = MdlSql::select.from(:instances).where(:status, 1, '>').execute
+    end
+    def update_hash time
+      results = MdlSql::select.from(:instances).where("status > 1 AND updated_at > #{time}").execute
+    end
+    def new_obj obj_data
+      obj = Instance.new obj_data
+    end
+  end
 
 And with this I could just go straight to work with the list:
 
-	il = InstanceList.new
-	il.load
-	il.ready.first # Get the first of the 'ready' instance
-	il.update 
+  il = InstanceList.new
+  il.load
+  il.ready.first # Get the first of the 'ready' instance
+  il.update 
 
 == License
 
