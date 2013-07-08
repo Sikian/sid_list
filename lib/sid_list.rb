@@ -247,13 +247,14 @@ class SidList
 		unless @list_by_status[status].is_a? Array
 			@list_by_status[status] = Array.new
 		end
+		if !(status.is_a? Symbol || status.is_a?(String))
+			raise "Object's status has no name (status #{status} was passed)."
+		end
 		unless self.respond_to?(status)
-			puts 'i dont respond'
 			self.class.send(:define_method, status) do 
 				@list_by_status[status] 
 			end
 		end
-
 		return @list_by_status[status]
 	end
 end
